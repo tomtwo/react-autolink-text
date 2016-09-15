@@ -44,7 +44,7 @@ function truncate(maxLength) {
     length += el.props.children.length;
 
     if (length > maxLength) {
-      const truncatedText = el.props.children.slice(0, -(length - maxLength));
+      const truncatedText = el.props.children.slice(0, -(length - maxLength)) + '...';
       elements.push(
         React.cloneElement(el, {}, truncatedText)
       );
