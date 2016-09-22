@@ -39,7 +39,7 @@ function truncateString(string, maxLength) {
   if (typeof string !== 'string') return string;
   if (string.length < maxLength) return string;
 
-  return string.substring(0, maxLength);
+  return string.substring(0, maxLength) + '...';
 }
 
 function truncate(maxLength) {
