@@ -10,12 +10,12 @@ export default class AutoLinkText extends React.Component {
     const text = this.props.text || '';
     const target = this.props.target || '_self';
     return (
-      <span>{matchParser(text)::prepareElements(text, target)::truncate(this.props.maxLength)::keyElements()}</span>
+      <span>{matchParser(text)::prepareElements(text, target, this.props.maxLinkLength)::truncate(this.props.maxLength)::keyElements()}</span>
     );
   }
 }
 
-function prepareElements(text, target) {
+function prepareElements(text, target, maxLinkLength) {
   let elements = [];
   let lastIndex = 0;
 
@@ -23,7 +23,7 @@ function prepareElements(text, target) {
     if (match.position.start !== 0) {
       elements.push(<span>{text.slice(lastIndex, match.position.start)}</span>);
     }
-    elements.push(<a href={match.getAnchorHref()} target={target}>{match.getAnchorText()}</a>);
+    elements.push(<a href={match.getAnchorHref()} target={target}>{truncateString(match.getAnchorText(), maxLinkLength)}</a>);
     lastIndex = match.position.end;
   });
 
@@ -32,6 +32,14 @@ function prepareElements(text, target) {
   }
 
   return elements;
+}
+
+function truncateString(string, maxLength) {
+  if (!maxLength) return string;
+  if (typeof string !== 'string') return string;
+  if (string.length < maxLength) return string;
+
+  return string.substring(0, maxLength);
 }
 
 function truncate(maxLength) {
